@@ -13,7 +13,7 @@
     />
 </head>
 <body>
-  <div class="container text-center fs-5">MOVIE LIST</div>
+  <div class="container text-center fs-5">DRAMA LIST</div>
       <table class="table table-bordered">
         <tr>
           <td>Title</td>
