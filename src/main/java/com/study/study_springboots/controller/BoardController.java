@@ -20,35 +20,39 @@ public class BoardController {
         return modelAndView;
 
     }
-    @RequestMapping(value = {"/", "/list"} , method = RequestMethod.GET)
+
+    @RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
     public ModelAndView list(ModelAndView modelAndView) {
         modelAndView.addObject("firstString", "firstValue");
         DataInfors dataInfors = new DataInfors();
         ArrayList<BoardBean> boardList = dataInfors.getDataListWithBoardBean();
-        modelAndView.addObject("boardList",boardList);
+        modelAndView.addObject("boardList", boardList);
 
         modelAndView.setViewName("board/list");
         return modelAndView;
     }
-    @RequestMapping(value = "/view", method = RequestMethod.GET)  
+
+    @RequestMapping(value = "/view", method = RequestMethod.GET)
     public ModelAndView view(@RequestParam String uid, ModelAndView modelAndView) {
 
         DataInfors dataInfors = new DataInfors();
         BoardBean boardBean = dataInfors.getDataWithMamberBean();
         modelAndView.addObject("boardBean", boardBean);
 
-        modelAndView.setViewName("board_our/view");
+        modelAndView.setViewName("board/view");
         return modelAndView;
     }
-    @RequestMapping(value = "/form", method = RequestMethod.GET)    
+
+    @RequestMapping(value = "/form", method = RequestMethod.GET)
     public ModelAndView form(ModelAndView modelAndView) {
-        modelAndView.setViewName("board_our/form");
+        modelAndView.setViewName("board/form");
         return modelAndView;
     }
-    @RequestMapping(value = "/save", method = RequestMethod.POST)    
+
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView save(ModelAndView modelAndView) {
         // insert biz
-        modelAndView.setViewName("board_our/list");
+        modelAndView.setViewName("board/list");
         return modelAndView;
     }
 }
