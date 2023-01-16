@@ -32,7 +32,7 @@ public class BoardController {
     }
     @RequestMapping(value = "/view", method = RequestMethod.GET)  
     public ModelAndView view(@RequestParam String uid, ModelAndView modelAndView) {
-        System.out.println("uid :" + uid);
+
         DataInfors dataInfors = new DataInfors();
         BoardBean boardBean = dataInfors.getDataWithMamberBean();
         modelAndView.addObject("boardBean", boardBean);
