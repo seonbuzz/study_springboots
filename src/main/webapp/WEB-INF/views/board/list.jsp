@@ -1,3 +1,5 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,13 +23,19 @@
           <td>User Name</td>
           <td>Date</td>
         </tr>
-        <tr>
-          <td>emily in paris</td>
-          <td>drama</td>
-          <td>emily</td>
-          <td>23.01.05</td>
-        </tr>
+          <c:forEach items="${boardList}" var="board" varStatus="status">
+                    <tr>
+                    <th scope=>${status.count}</th>
+                    <td><a href="/board/view?title=${board.title}">${board.title}</a></td>
+                    <td>${board.userName}</td>
+                    <td>${board.date}</td>
+                    </tr>
+                </c:forEach>
       </table>
+
+       <div>
+            <form action="/board/form"><button>form</button></form>
+        <div>
         <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
