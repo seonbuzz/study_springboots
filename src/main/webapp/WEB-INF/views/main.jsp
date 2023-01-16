@@ -10,5 +10,6 @@
     <div>main ! -JSP-</div>
     <div>Board</div>
     <div><a href="/board/form">/board form BoardController</a></div>
+    <div><a href="/board_our/list">/board form BoardOurController list</a></div>
   </body>
 </html>

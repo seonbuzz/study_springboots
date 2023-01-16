@@ -11,24 +11,32 @@ import org.springframework.web.servlet.ModelAndView;
 import com.study.study_springboots.beans.BoardBean;
 import com.study.study_springboots.service.DataInfors;
 
+// * Cast 
+// - use bootstrap
+// - 항목 : title, content,userName, date
+// - CRUD : 
+//   + list.jsp(/board) -> view.jsp(/board_our/view) -> list.jsp(/board_our/list)
+//   + list.jsp(/board) -> form.jsp(/board_our/form) -> list.jsp(/board_our/save) with Post
+//   + view.jsp(/board_our/view) -> edit.jsp(/board_our/edit) -> list.jsp(/board_our/save)
 @Controller
-@RequestMapping(value = "board")
-public class BoardController {
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+@RequestMapping(value = "/board_our")
+public class BoardOurController {
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)  
     public ModelAndView edit(ModelAndView modelAndView) {
-        modelAndView.setViewName("board/edit");
+        modelAndView.setViewName("board_our/edit");
         return modelAndView;
-
     }
-    @RequestMapping(value = {"/", "/list"} , method = RequestMethod.GET)
-    public ModelAndView list(ModelAndView modelAndView) {
+    @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)  
+    public ModelAndView list() {
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("firstString", "firstValue");
         DataInfors dataInfors = new DataInfors();
         ArrayList<BoardBean> boardList = dataInfors.getDataListWithBoardBean();
-        modelAndView.addObject("boardList",boardList);
+        modelAndView.addObject("boardList", boardList);
+        
+        modelAndView.setViewName("board_our/list");
 
-        modelAndView.setViewName("board/list");
-        return modelAndView;
+        return modelAndView;    // --> Dispatcher Servlet
     }
     @RequestMapping(value = "/view", method = RequestMethod.GET)  
     public ModelAndView view(@RequestParam String uid, ModelAndView modelAndView) {
@@ -52,3 +60,4 @@ public class BoardController {
         return modelAndView;
     }
 }
+
