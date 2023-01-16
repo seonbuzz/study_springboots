@@ -31,13 +31,13 @@ public class DataInfors {
         bundlesData.put("searchForm", searchForm);
         bundlesData.put("tablesListWithString", tablesListWithString);
 
-        bundlesData.put("dataWithMamberBean", DataInfors.getDataWithMamberBean());
+        bundlesData.put("dataWithMemberBean", DataInfors.getDataWithMemberBean());
         bundlesData.put("dataListWithBoardBean", DataInfors.getDataListWithBoardBean());
 
         return bundlesData;
     }
 
-    public BoardBean getDataWithMamberBean() {
+    public BoardBean getDataWithMemberBean() {
         BoardBean boardBean = new BoardBean();
         boardBean.setTitle("Mark");
         boardBean.setContent("Otto");

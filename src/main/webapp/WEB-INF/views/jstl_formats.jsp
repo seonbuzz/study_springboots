@@ -33,7 +33,23 @@
     <div>time출력 : <fmt:formatDate value="${date_first}" type="time" /> </div>
     <div>date 출력 : <fmt:formatDate value="${date_first}" type="date" /></div>
     <div>date and time : <fmt:formatDate value="${date_first}" type="both" /> </div>
+  <hr/>
+  <div>jstl Formats - Location</div>
+  <c:set var="num_third" value="1234567.89" />
+  <c:set var="date_third" value="<%= new java.util.Date() %>" />
+  <div>대한민국 나라 : <fmt:setLocale value="ko_KR" scope="session" /> </div>
+  <div>통화 : <fmt:formatNumber value="${num_third}" type="currency" /> </div>
+  <div>날짜 : <fmt:formatDate value="${date_third}" type="both" /> </div>
 
+  <div>나라 : <fmt:setLocale value="en-US" scope="session" /> </div>
+  <div>통화 : <fmt:formatNumber value="${num_third}" type="currency" /> </div>
+  <div>날짜 : <fmt:formatDate value="${date_third}" type="both" /> </div>
+
+  <div>나라 : <fmt:setLocale value="ja-JP" scope="session" /> </div>
+  <div>통화 : <fmt:formatNumber value="${num_third}" type="currency" /> </div>
+  <div>날짜 : <fmt:formatDate value="${date_third}" type="both" /> </div>
+  <div></div>
+  <div></div>
 
   </body>
 </html>
