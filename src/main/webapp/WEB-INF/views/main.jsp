@@ -10,6 +10,10 @@
     <div>main ! -JSP-</div>
     <div>Board</div>
     <div><a href="/board/form">/board form BoardController</a></div>
+<<<<<<< HEAD
     <div><a href="/board_our/list">/board form BoardOurController list</a></div>
+=======
+    <div><a href="/board_our/list">/board_our  BoardOurController list() /board_our/list.jsp</a></div>
+>>>>>>> origin/master
   </body>
 </html>
