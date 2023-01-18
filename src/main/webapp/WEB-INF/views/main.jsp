@@ -13,5 +13,6 @@
     <div><a href="/board_our/list">/board form BoardOurController list</a></div>
     <div><a href="/board/list">/board form BoardController list</a></div>
     <div><a href="/jstlformats">jstl_formats.jsp</a></div>
+    <div><a href="/commonCodeOur/">commonCodeOur/list.jsp</a></div>
   </body>
 </html>
