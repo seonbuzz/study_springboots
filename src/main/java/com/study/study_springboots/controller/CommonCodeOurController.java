@@ -19,15 +19,34 @@ public class CommonCodeOurController {
     @Autowired
     CommonCodeOurService commonCodeOurService;
 
-    @RequestMapping(value = { "/form" }, method = RequestMethod.POST)
+    @RequestMapping(value = { "/insert" }, method = RequestMethod.POST)
+    public ModelAndView insert(@RequestParam Map<String, Object> params, ModelAndView modelAndView) {
+        commonCodeOurService.insertOne(params);
+        modelAndView.setViewName("commonCode_our/list");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = { "/form" }, method = RequestMethod.GET)
     public ModelAndView form(@RequestParam Map<String, Object> params, ModelAndView modelAndView) {
         modelAndView.setViewName("commonCode_our/edit");
         return modelAndView;
     }
 
+    @RequestMapping(value = { "/delete/{uniqueId}" }, method = RequestMethod.GET)
+    public ModelAndView delete(@RequestParam Map<String, Object> params, @PathVariable String uniqueId,
+            ModelAndView modelAndView) {
+        params.put("COMMON_CODE_ID", uniqueId);
+        Object resultMap = commonCodeOurService.deleteAndGetList(params);
+        // commonCodeOurService.delete(params);
+        modelAndView.addObject("resultMap", resultMap);
+        modelAndView.setViewName("commonCode_our/list");
+        return modelAndView;
+    }
+
     @RequestMapping(value = { "/update" }, method = RequestMethod.POST)
     public ModelAndView update(@RequestParam Map<String, Object> params, ModelAndView modelAndView) {
-        commonCodeOurService.getOne(params);
+        Object resultMap = commonCodeOurService.updateAndGetList(params);
+        modelAndView.addObject("resultMap", resultMap);
         modelAndView.setViewName("commonCode_our/list");
         return modelAndView;
     }
@@ -43,6 +62,7 @@ public class CommonCodeOurController {
     @RequestMapping(value = { "/edit/{uniqueId}" }, method = RequestMethod.GET)
     public ModelAndView edit(@RequestParam Map<String, Object> params, @PathVariable String uniqueId,
             ModelAndView modelAndView) {
+        params.put("COMMON_CODE_ID", uniqueId);
         Object resultMap = commonCodeOurService.getOne(params);
         modelAndView.addObject("resultMap", resultMap);
         modelAndView.setViewName("commonCode_our/edit");

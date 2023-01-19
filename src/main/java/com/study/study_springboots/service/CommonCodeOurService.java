@@ -10,6 +10,19 @@ public class CommonCodeOurService {
     @Autowired
     CommonCodeOurDao commonCodeOurDao;
 
+    public Object updateAndGetList(Object dataMap) {
+        Object result = this.updateOne(dataMap);
+        result = this.getList(dataMap);
+        return result;
+    }
+
+    public Object deleteAndGetList(Object dataMap) {
+        Object result = this.delete(dataMap);
+
+        result = this.getList(dataMap);
+        return result;
+    }
+
     public Object getList(Object dataMap) {
         String sqlMapId = "CommonCodeOur.selectListByUID";
         Object result = commonCodeOurDao.getList(sqlMapId, dataMap);
@@ -27,6 +40,13 @@ public class CommonCodeOurService {
         String sqlMapId = "CommonCodeOur.updateByUID";
 
         Object result = commonCodeOurDao.update(sqlMapId, dataMap);
+        return result;
+    }
+
+    public Object insertOne(Object dataMap) {
+        String sqlMapId = "CommonCodeOur.insertWithUID";
+
+        Object result = commonCodeOurDao.insert(sqlMapId, dataMap);
         return result;
     }
 
