@@ -2,21 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="AttachFile">
-    <!-- call -->
+    <!-- call AttachFile.selectListByUID-->
     <select id="selectListByUID" 
         parameterType="Map" resultType="Map">
         select *
         from CIP_ATTACHFILE
         where SOURCE_UNIQUE_SEQ = #{SOURCE_UNIQUE_SEQ};
+        <!-- # : key를 사용한다 -->
     </select>
 
-    <!-- call CommonCodeOur.insertWithUID -->
+    <!-- call AttachFile.insertMulti -->
     <insert id="insertMulti" parameterType="Map">
         insert into CIP_ATTACHFILE
         (ATTACHFILE_SEQ, SOURCE_UNIQUE_SEQ, ORGINALFILE_NAME, PHYSICALFILE_NAME
         , REGISTER_SEQ, REGISTRY_DATE, MODIFIER_SEQ, MODIFY_DATE)
         values
-        <!-- ('2023.01.2612505201', 'TEMP_29', 'cast.txt', '20230126_112456'
+        <!-- ('2023.01.2612505201', 'TEMP_29', '캡처.PNG', '20230126_112456'
         ,'UUID-1111-1111111',sysdate(),'UUID-1111-1111111',sysdate()),('2023.01.2612505202', 'TEMP_29', 'cast01.txt', '20230126_112456'
         ,'UUID-1111-1111111',sysdate(),'UUID-1111-1111111',sysdate())     -->
         <foreach collection="attachfiles" item="attachfile"

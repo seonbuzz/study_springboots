@@ -1,5 +1,8 @@
 package com.study.study_springboots.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,16 @@ public class CommonCodeOurService {
     @Autowired
     AttachFileService attachFileService;
 
+    public Object getOneWithAttachFiles(Object dataMap){
+        // Attach files ArrayList<Map>
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("attachFiles",  attachFileService.getList(dataMap));
+
+        //기존 값 보존을 위해 사용함
+         result.putAll((HashMap<String, Object>)this.getOne(dataMap)); 
+         //putAll : 키가 같으면 덮어써지고 그렇지 않으면 그대로 동작함.
+        return result;
+    }
     public Object updateAndGetList(Object dataMap) {
         Object result = this.updateOne(dataMap);
         result = this.getList(dataMap);

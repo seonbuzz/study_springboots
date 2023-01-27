@@ -32,8 +32,11 @@ public class AttachFileService {
     }
 
     public Object getList(Object dataMap) {
+        // AttachFiles 
+
         String sqlMapId = "AttachFile.selectListByUID";
         Object result = attachFileDao.getList(sqlMapId, dataMap);
+        // result의 타입은 Object이지만 이 Object는 ArrayList에서 옴. 결과적으로 Arraylist
         return result;
     }
 
