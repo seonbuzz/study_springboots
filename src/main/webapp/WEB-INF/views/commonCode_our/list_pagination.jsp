@@ -9,23 +9,23 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 />
 
 <div class="container">
-  <!-- Form list  -->
+  <!-- <%-- Form list --%> -->
   <div class="row">
     <div class="col">
       <form action="/commonCodeOur/form" method="get">
         <button class="btn btn-info">Form</button>
       </form>
     </div>
-
     <div class="col">
       <form action="/commonCodeOur/formMulti" method="get">
         <button class="btn btn-info">FormMulti</button>
       </form>
     </div>
   </div>
-  <!-- pagination  -->
+  <!-- <%-- pagination --%> -->
   <nav aria-label="Page navigation example">
-    <span>총 개수 :</span>
+    <c:set var="_pagination" value="${resultMap.paginations}" />
+    <span>총 갯수 : ${_pagination.totalCount}</span>
     <ul class="pagination">
       <li class="page-item">
         <a class="page-link" href="#" aria-label="Previous">
@@ -33,9 +33,16 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
           <span class="sr-only">Previous</span>
         </a>
       </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <!-- <%-- for(int i=0;i > 9;i++){} --%> -->
+      <c:forEach
+        var="i"
+        begin="${_pagination.blockStart}"
+        end="${_pagination.blockEnd}"
+      >
+        <li class="page-item">
+          <a class="page-link" href="/commonCodeOur/listPagination/1">${i}</a>
+        </li>
+      </c:forEach>
       <li class="page-item">
         <a class="page-link" href="#" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
@@ -58,7 +65,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
         </tr>
       </thead>
       <tbody>
-        <c:forEach items="${resultMap}" var="resultData" varStatus="loop">
+        <c:forEach
+          items="${resultMap.resultList}"
+          var="resultData"
+          varStatus="loop"
+        >
           <tr>
             <td class="text-center">
               <input

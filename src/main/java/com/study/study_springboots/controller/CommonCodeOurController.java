@@ -38,8 +38,8 @@ public class CommonCodeOurController {
     CommonUtils commonUtils;
 
     @RequestMapping(value = { "/insert" }, method = RequestMethod.POST)
-    public ModelAndView insert(MultipartHttpServletRequest multipartHttpServletRequest
-            , @RequestParam Map<String, Object> params, ModelAndView modelAndView) throws IOException {
+    public ModelAndView insert(MultipartHttpServletRequest multipartHttpServletRequest,
+            @RequestParam Map<String, Object> params, ModelAndView modelAndView) throws IOException {
 
         String registerSeq = multipartHttpServletRequest.getParameter("REGISTER_SEQ");
 
@@ -48,7 +48,7 @@ public class CommonCodeOurController {
 
         String relativePath = "src/main/resources/static/files/";
         // file 저장
-        BufferedWriter bufferedWriter = Files.newBufferedWriter(Paths.get(relativePath+fileName));
+        BufferedWriter bufferedWriter = Files.newBufferedWriter(Paths.get(relativePath + fileName));
         bufferedWriter.write(new String(multipartFile.getBytes()));
         bufferedWriter.flush();
 
@@ -58,24 +58,24 @@ public class CommonCodeOurController {
     }
 
     @RequestMapping(value = { "/updateMulti" }, method = RequestMethod.POST)
-    public ModelAndView updateMulti(MultipartHttpServletRequest multipartHttpServletRequest
-            , @RequestParam Map<String, Object> params, ModelAndView modelAndView) throws IOException {
+    public ModelAndView updateMulti(MultipartHttpServletRequest multipartHttpServletRequest,
+            @RequestParam Map<String, Object> params, ModelAndView modelAndView) throws IOException {
 
-                Iterator<String> fileNames = multipartHttpServletRequest.getFileNames();
-                while (fileNames.hasNext()) {
-                    String value = (String)params.get(fileNames.next());
-                    System.out.println(value); //DB에 저장되어있음.
-                    if(value != null){
-                        // originalfilename과 있는지 여부 확인
-                    }
-                }
-                modelAndView.setViewName("commonCode_our/list");
-                return modelAndView;
+        Iterator<String> fileNames = multipartHttpServletRequest.getFileNames();
+        while (fileNames.hasNext()) {
+            String value = (String) params.get(fileNames.next());
+            System.out.println(value); // DB에 저장되어있음.
+            if (value != null) {
+                // originalfilename과 있는지 여부 확인
             }
+        }
+        modelAndView.setViewName("commonCode_our/list");
+        return modelAndView;
+    }
 
     @RequestMapping(value = { "/insertMulti" }, method = RequestMethod.POST)
-    public ModelAndView insertMulti(MultipartHttpServletRequest multipartHttpServletRequest
-            , @RequestParam Map<String, Object> params, ModelAndView modelAndView) throws IOException {
+    public ModelAndView insertMulti(MultipartHttpServletRequest multipartHttpServletRequest,
+            @RequestParam Map<String, Object> params, ModelAndView modelAndView) throws IOException {
 
         Iterator<String> fileNames = multipartHttpServletRequest.getFileNames();
         String absolutePath = commonUtils.getRelativeToAbsolutePath("src/main/resources/static/files/");
@@ -83,34 +83,34 @@ public class CommonCodeOurController {
         Map attachfile = null;
         List attachfiles = new ArrayList();
         String physicalFileName = commonUtils.getUniqueSequence();
-        String storePath = absolutePath + physicalFileName + File.separator ;
+        String storePath = absolutePath + physicalFileName + File.separator;
         File newPath = new File(storePath);
-        newPath.mkdir();        // create directory
+        newPath.mkdir(); // create directory
         while (fileNames.hasNext()) {
             String fileName = fileNames.next();
             MultipartFile multipartFile = multipartHttpServletRequest.getFile(fileName);
             String originalFilename = multipartFile.getOriginalFilename();
 
-            //방어코드 (파일 업로드를 하지 않았을때)
-            if(originalFilename != null && multipartFile.getSize() > 0){
+            // 방어코드 (파일 업로드를 하지 않았을때)
+            if (originalFilename != null && multipartFile.getSize() > 0) {
                 String storePathFileName = storePath + originalFilename;
                 multipartFile.transferTo(new File(storePathFileName));
-            //받아온 객체를 업로드 처리하지 않으면 임시파일에 저장된 파일이 자동적으로 삭제되기 때문에 
-            // MultipartFile객체의 transferTo(File f) 메서드를 이용해서 업로드처리를 해야 한다.
-            
-            // add SOURCE_UNIQUE_SEQ, ORGINALFILE_NAME, PHYSICALFILE_NAME in HashMap
-            //DB put
-            attachfile = new HashMap<>();
-            attachfile.put("ATTACHFILE_SEQ", commonUtils.getUniqueSequence());
-            attachfile.put("SOURCE_UNIQUE_SEQ", params.get("COMMON_CODE_ID") );
-            attachfile.put("ORGINALFILE_NAME", originalFilename);
-            attachfile.put("PHYSICALFILE_NAME", physicalFileName);
-            attachfile.put("REGISTER_SEQ", params.get("REGISTER_SEQ"));
-            attachfile.put("MODIFIER_SEQ", params.get("MODIFIER_SEQ"));
-            
-            attachfiles.add(attachfile);
-            
-          }
+                // 받아온 객체를 업로드 처리하지 않으면 임시파일에 저장된 파일이 자동적으로 삭제되기 때문에
+                // MultipartFile객체의 transferTo(File f) 메서드를 이용해서 업로드처리를 해야 한다.
+
+                // add SOURCE_UNIQUE_SEQ, ORGINALFILE_NAME, PHYSICALFILE_NAME in HashMap
+                // DB put
+                attachfile = new HashMap<>();
+                attachfile.put("ATTACHFILE_SEQ", commonUtils.getUniqueSequence());
+                attachfile.put("SOURCE_UNIQUE_SEQ", params.get("COMMON_CODE_ID"));
+                attachfile.put("ORGINALFILE_NAME", originalFilename);
+                attachfile.put("PHYSICALFILE_NAME", physicalFileName);
+                attachfile.put("REGISTER_SEQ", params.get("REGISTER_SEQ"));
+                attachfile.put("MODIFIER_SEQ", params.get("MODIFIER_SEQ"));
+
+                attachfiles.add(attachfile);
+
+            }
         }
         params.put("attachfiles", attachfiles);
 
@@ -170,6 +170,17 @@ public class CommonCodeOurController {
         return modelAndView;
     }
 
+    @RequestMapping(value = { "/listPagination/{currentPage}" }, method = RequestMethod.GET)
+    public ModelAndView listPagination(@RequestParam Map<String, Object> params, @PathVariable String currentPage,
+            ModelAndView modelAndView) {
+        params.put("currentPage", Integer.parseInt(currentPage));
+        params.put("pageScale", 10);
+        Object resultMap = commonCodeOurService.getListWithPagination(params);
+        modelAndView.addObject("resultMap", resultMap);
+        modelAndView.setViewName("commonCode_our/list_pagination");
+        return modelAndView;
+    }
+
     @RequestMapping(value = { "/edit/{uniqueId}" }, method = RequestMethod.GET)
     public ModelAndView edit(@RequestParam Map<String, Object> params, @PathVariable String uniqueId,
             ModelAndView modelAndView) {
@@ -179,6 +190,7 @@ public class CommonCodeOurController {
         modelAndView.setViewName("commonCode_our/edit");
         return modelAndView;
     }
+
     @RequestMapping(value = { "/editMulti/{uniqueId}" }, method = RequestMethod.GET)
     public ModelAndView editMulti(@RequestParam Map<String, Object> params, @PathVariable String uniqueId,
             ModelAndView modelAndView) {

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.study.study_springboots.dao.CommonCodeOurDao;
+import com.study.study_springboots.utils.Paginations;
 
 @Service
 public class CommonCodeOurService {
@@ -16,16 +17,17 @@ public class CommonCodeOurService {
     @Autowired
     AttachFileService attachFileService;
 
-    public Object getOneWithAttachFiles(Object dataMap){
+    public Object getOneWithAttachFiles(Object dataMap) {
         // Attach files ArrayList<Map>
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("attachFiles",  attachFileService.getList(dataMap));
+        result.put("attachFiles", attachFileService.getList(dataMap));
 
-        //기존 값 보존을 위해 사용함
-         result.putAll((HashMap<String, Object>)this.getOne(dataMap)); 
-         //putAll : 키가 같으면 덮어써지고 그렇지 않으면 그대로 동작함.
+        // 기존 값 보존을 위해 사용함
+        result.putAll((HashMap<String, Object>) this.getOne(dataMap));
+        // putAll : 키가 같으면 덮어써지고 그렇지 않으면 그대로 동작함.
         return result;
     }
+
     public Object updateAndGetList(Object dataMap) {
         Object result = this.updateOne(dataMap);
         result = this.getList(dataMap);
@@ -40,10 +42,28 @@ public class CommonCodeOurService {
     }
 
     public Object insertWithFilesAndGetList(Object dataMap) {
-        //insert files
-       Object result =  attachFileService.insertMulti(dataMap);
+        // insert files
+        Object result = attachFileService.insertMulti(dataMap);
         result = this.insertOne(dataMap);
         result = this.getList(dataMap);
+        return result;
+    }
+
+    public Object getListWithPagination(Object dataMap) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        int totalCount = (int) this.getTotal(dataMap);
+        int currentPage = (int) ((Map<String, Object>) dataMap).get("currentPage");
+        Paginations paginations = new Paginations(totalCount, currentPage);
+        result.put("paginations", paginations);
+        ((Map<String, Object>) dataMap).put("pageBegin", paginations.getPageBegin());
+        result.put("resultList", this.getList(dataMap));
+        return result;
+    }
+
+    public Object getTotal(Object dataMap) {
+        String sqlMapId = "CommonCodeOur.selectTotal";
+
+        Object result = commonCodeOurDao.getOne(sqlMapId, dataMap);
         return result;
     }
 
@@ -80,6 +100,7 @@ public class CommonCodeOurService {
         Object result = commonCodeOurDao.delete(sqlMapId, dataMap);
         return result;
     }
+
     public Object deleteMulti(Object dataMap) {
         String sqlMapId = "CommonCodeOur.deleteMultiByUIDs";
 
