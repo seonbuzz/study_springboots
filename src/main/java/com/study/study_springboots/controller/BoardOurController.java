@@ -37,7 +37,7 @@ public class BoardOurController {
     @RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
     public ModelAndView list() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("firstString", "firstValue");
+        // modelAndView.addObject("firstString", "firstValue");
         // DataInfors dataInfors = new DataInfors();
         ArrayList<BoardBean> boardList = dataInfors.getDataListWithBoardBean();
         modelAndView.addObject("boardList", boardList);

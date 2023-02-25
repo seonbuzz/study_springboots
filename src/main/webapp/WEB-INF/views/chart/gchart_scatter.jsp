@@ -1,5 +1,10 @@
 <html>
-  <head>
+  <head> </head>
+
+  <body>
+    <script src="/webjars/jquery/3.6.3/jquery.js"></script>
+    <script src="/webjars/jquery/3.6.3/jquery.min.js"></script>
+
     <script
       type="text/javascript"
       src="https://www.gstatic.com/charts/loader.js"
@@ -8,19 +13,25 @@
       google.charts.load("current", { packages: ["corechart"] });
       google.charts.setOnLoadCallback(drawChart);
 
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ["Age", "Weight"],
-          [8, 12],
-          [4, 5.5],
-          [11, 14],
-          [4, 5],
-          [3, 3.5],
-          [6.5, 7],
-        ]);
+        let dataArray = ${dataArray};
 
+      function drawChart() {
+        // var data = google.visualization.arrayToDataTable([
+        //   ["Age", "Weight"],
+        //   [8, 12],
+        //   [4, 5.5],
+        //   [11, 14],
+        //   [4, 5],
+        //   [3, 3.5],
+        //   [6.5, 7],
+        // ]);
+
+        var data = google.visualization.arrayToDataTable(dataArray);
+        let target_element = document.getElementById('chart_div');
+        let height =  target_element.parentElement.clientHeight;
         var options = {
           title: "Age vs. Weight comparison",
+          height : height,
           hAxis: { title: "Age", minValue: 0, maxValue: 15 },
           vAxis: { title: "Weight", minValue: 0, maxValue: 15 },
           legend: "none", // 범례
@@ -32,6 +43,8 @@
 
         chart.draw(data, options);
       }
+
+      window.addEventListener("resize",drawChart, false);
     </script>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
@@ -48,9 +61,7 @@
         height: 50vh;
       }
     </style>
-  </head>
 
-  <body>
     <div class="container">
       <div class="row vh-50">
         <div class="col-5" id="chart_div"></div>
